@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 
-class PayController extends Controller
+class AlipayController extends Controller
 {
     public $app_id = '2016092200572085';
     public $gate_way = 'https://openapi.alipaydev.com/gateway.do';
