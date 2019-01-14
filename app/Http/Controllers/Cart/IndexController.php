@@ -58,8 +58,7 @@ class IndexController extends Controller
                 'num'=>$num+$goods_num,
             ];
             $res=CartModel::where(['goods_id'=>$goods_id])->update($data);
-        }
-        if(empty($goods_id)){
+        }else{
             $data=[
                 'goods_id'=>$goods_id,
                 'num'=>$num,
