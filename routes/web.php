@@ -58,23 +58,23 @@ Route::get('/login','User\UserController@login');
 Route::post('/login','User\UserController@doLogin');
 Route::get('/users/list','User\UserController@list');
 //购物车
-Route::get('/cart/list','Cart\IndexController@index');
-Route::get('/users/add/{goods_id}','Cart\IndexController@add');
-Route::get('/cart/del/{id}','Cart\IndexController@del');
-Route::post('/cart/add2','Cart\IndexController@add2');
+Route::get('/cart/list','Cart\IndexController@index')->middleware('check.login');
+Route::get('/users/add/{goods_id}','Cart\IndexController@add')->middleware('check.login');
+Route::get('/cart/del/{id}','Cart\IndexController@del')->middleware('check.login');
+Route::post('/cart/add2','Cart\IndexController@add2')->middleware('check.login');
 
 //商品
-Route::get('/goods/index/{goods_id}','Goods\IndexController@index');
-Route::get('/goods/list','Goods\IndexController@list');
+Route::get('/goods/index/{goods_id}','Goods\IndexController@index')->middleware('check.login');
+Route::get('/goods/list','Goods\IndexController@list')->middleware('check.login');
 //提交订单
-Route::get('/order/add/{id}','Order\IndexController@add');
-Route::get('/order/list','Order\IndexController@list');
-Route::get('/order/detail/{order_sn}','Order\IndexController@detail');
-Route::get('/order/del/{order_sn}','Order\IndexController@del');
+Route::get('/order/add/{id}','Order\IndexController@add')->middleware('check.login');
+Route::get('/order/list','Order\IndexController@list')->middleware('check.login');
+Route::get('/order/detail/{order_sn}','Order\IndexController@detail')->middleware('check.login');
+Route::get('/order/del/{order_sn}','Order\IndexController@del')->middleware('check.login');
 
 Route::get('/order/order','Order\IndexController@test');
 //支付
-Route::get('/order/pay/{order_sn}','Order\IndexController@pay');
+Route::get('/order/pay/{order_sn}','Order\IndexController@pay')->middleware('check.login');
 Route::get('/pay/alipay/test/{order_sn}','Pay\AlipayController@test');         //测试
 Route::post('/pay/alipay/notify','Pay\AlipayController@aliNotify');        //支付宝支付 通知回调
 Route::get('/pay/alipay/alireturn','Pay\AlipayController@aliReturn');        //支付宝支付 同步通知回调

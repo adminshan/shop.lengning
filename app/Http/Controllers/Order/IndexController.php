@@ -30,7 +30,7 @@ class indexController extends Controller
         $data=[
             'order_sn'=>$order_sn,
             'goods_id'=>$goods_info->goods_id,
-            'uid'=>session('uid'),
+            'uid'=>session()->get('uid'),
             'order_num'=>$cart_goods->num,
             'add_time'=>time(),
             'order_amount'=>$orde_amount
