@@ -76,7 +76,7 @@ Route::get('/order/order','Order\IndexController@test');
 //支付
 Route::get('/order/pay/{order_sn}','Order\IndexController@pay');
 Route::get('/pay/alipay/test/{order_sn}','Pay\AlipayController@test');         //测试
-Route::post('/pay/alipay/notify','Pay\AlipayController@notify');        //支付宝支付 通知回调
+Route::post('/pay/alipay/notify','Pay\AlipayController@aliNotify');        //支付宝支付 通知回调
 Route::get('/pay/alipay/alireturn','Pay\AlipayController@aliReturn');        //支付宝支付 同步通知回调
 //退出
 Route::get('/users/quit','User\UserController@quit');
