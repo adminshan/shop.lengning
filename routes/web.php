@@ -21,8 +21,8 @@ Route::get('/adduser','User\UserController@add');
 Route::redirect('/hello1','/world1',301);
 Route::get('/world1','Test\TestController@world1');
 
-Route::get('hello2','Test\TestController@hello2');
-Route::get('world2','Test\TestController@world2');
+Route::get('/hello2','Test\TestController@hello2');
+Route::get('/world2','Test\TestController@world2');
 
 
 //路由参数
@@ -47,7 +47,7 @@ Route::get('/query/where','Test\TestController@query2');
 
 
 //Route::match(['get','post'],'/test/abc','Test\TestController@abc');
-Route::any('/test/abc','Test\TestController@abc');
+//Route::any('/test/abc','Test\TestController@abc');
 
 //用户注册
 Route::get('/reg','User\UserController@reg');
@@ -60,21 +60,21 @@ Route::get('/users/list','User\UserController@list');
 //购物车
 Route::get('/cart/list','Cart\IndexController@index')->middleware('check.login');
 Route::get('/users/add/{goods_id}','Cart\IndexController@add')->middleware('check.login');
-Route::any('/cart/del/{id}','Cart\IndexController@del')->middleware('check.login');
+Route::get('/cart/del/{id}','Cart\IndexController@del')->middleware('check.login');
 Route::post('/cart/add2','Cart\IndexController@add2')->middleware('check.login');
 
 //商品
 Route::get('/goods/index/{goods_id}','Goods\IndexController@index')->middleware('check.login');
 Route::get('/goods/list','Goods\IndexController@list');
 //提交订单
-Route::any('/order/add/{id}','Order\IndexController@add')->middleware('check.login');
-Route::any('/order/list','Order\IndexController@list')->middleware('check.login');
-Route::any('/order/detail/{order_sn}','Order\IndexController@detail')->middleware('check.login');
-Route::any('/order/del/{order_sn}','Order\IndexController@del')->middleware('check.login');
+Route::get('/order/add/{id}','Order\IndexController@add')->middleware('check.login');
+Route::get('/order/list','Order\IndexController@list')->middleware('check.login');
+Route::get('/order/detail/{order_sn}','Order\IndexController@detail')->middleware('check.login');
+Route::get('/order/del/{order_sn}','Order\IndexController@del')->middleware('check.login');
 
 Route::get('/order/order','Order\IndexController@test');
 //支付
-Route::any('/order/pay/{order_sn}','Order\IndexController@pay')->middleware('check.login');
+Route::get('/order/pay/{order_sn}','Order\IndexController@pay')->middleware('check.login');
 Route::get('/pay/alipay/test/{order_sn}','Pay\AlipayController@test');         //测试
 Route::get('/pay/o/{oid}','Pay\IndexController@order')->middleware('check.login.token');         //订单支付
 Route::post('/pay/alipay/notify','Pay\AlipayController@notify');        //支付宝支付 通知回调
