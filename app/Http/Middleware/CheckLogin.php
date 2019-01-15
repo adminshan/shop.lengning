@@ -15,9 +15,9 @@ class CheckLogin
      */
     public function handle($request, Closure $next)
     {
-        if(empty($_COOKIE['uid'])){
+        if(empty(session('uid'))){
             header('Refresh:2;url=/login');
-            echo '没有此用户，请确定';echo '</br>';
+            echo '无此用户信息，请确定';echo '</br>';
             exit;
         }else if(!$request->session()->get('u_token')){
 

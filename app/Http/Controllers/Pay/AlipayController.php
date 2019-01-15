@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers\Pay;
 
+use App\Model\OrderModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 
 class AlipayController extends Controller
 {
-    public $app_id = '2016092200572085';
-    public $gate_way = 'https://openapi.alipaydev.com/gateway.do';
-    public $notify_url = 'http://wang.tactshan.com/pay/alipay/notify';
+    public $app_id;
+    public $gate_way;
+    public $notify_url;
+    public $return_url;
     public $rsaPrivateKeyFilePath = './key/priv.key';
-
+    public $aliPubKey = './key/ali_pub.key';
+    public function __construct(){
+        $this->app_id = env('ALIPAY_APP_ID');
+        $this->gate_way = env('ALIPAY_GATE_WAY');
+        $this->notify_url = env('ALIPAY_NOTIFY_URL');
+        $this->return_url = env('ALIPAY_RETURN_URL');
+    }
 
     /**
      * 请求订单服务 处理订单逻辑
@@ -32,13 +40,19 @@ class AlipayController extends Controller
         echo $response->getBody();
     }
 
-    public function test()
+    public function test($order_sn)
     {
-
+        $where=[
+            'order_sn'=>$order_sn
+        ];
+        $info=OrderModel::where($where)->first();
+        if($info->status==3){
+            die('订单已支付,请勿重复支付');
+        }
         $bizcont = [
-            'subject'           => 'ancsd'. mt_rand(1111,9999).str_random(6),
-            'out_trade_no'      => 'oid'.date('YmdHis').mt_rand(1111,2222),
-            'total_amount'      => 0.01,
+            'subject'           => 'Lening-Order: ' .$order_sn,
+            'out_trade_no'      => $order_sn,
+            'total_amount'      => $info->order_amount,
             'product_code'      => 'QUICK_WAP_WAY',
 
         ];
@@ -52,6 +66,7 @@ class AlipayController extends Controller
             'timestamp'   => date('Y-m-d H:i:s'),
             'version'   => '1.0',
             'notify_url'   => $this->notify_url,
+            'return_url'   => $this->return_url,
             'biz_content'   => json_encode($bizcont),
         ];
 
@@ -128,5 +143,83 @@ class AlipayController extends Controller
             }
         }
         return $data;
+    }
+    /**
+     * 支付宝同步通知回调
+     */
+    public function aliReturn()
+    {
+        header('Refresh:2;url=/order/list');
+        echo "订单： ".$_GET['out_trade_no'] . ' 支付成功，正在跳转';
+//        echo '<pre>';print_r($_GET);echo '</pre>';
+//        //验签 支付宝的公钥
+//        if(!$this->verify()){
+//            echo 'error';
+//        }
+//        //处理订单逻辑
+//        $this->dealOrder($_GET);
+    }
+    /**
+     * 支付宝异步通知
+     */
+    public function aliNotify()
+    {
+
+        $data = json_encode($_POST);
+        $log_str = '>>>> '.date('Y-m-d H:i:s') . $data . "<<<<\n\n";
+        //记录日志
+        file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        //验签
+        $res = $this->verify($_POST);
+
+        $log_str = '>>>> ' . date('Y-m-d H:i:s');
+        if($res === false){
+            //记录日志 验签失败
+            $log_str .= " Sign Failed!<<<<< \n\n";
+            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        }else{
+            $log_str .= " Sign OK!<<<<< \n\n";
+            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        }
+
+        //处理订单逻辑
+        $this->dealOrder($_POST);
+
+        echo 'success';
+    }
+
+
+    //验签
+    function verify($params) {
+        $sign = $params['sign'];
+        $params['sign_type'] = null;
+        $params['sign'] = null;
+
+        //读取公钥文件
+        $pubKey = file_get_contents($this->aliPubKey);
+        $pubKey = "-----BEGIN PUBLIC KEY-----\n" .
+            wordwrap($pubKey, 64, "\n", true) .
+            "\n-----END PUBLIC KEY-----";
+        //转换为openssl格式密钥
+
+        $res = openssl_get_publickey($pubKey);
+        ($res) or die('支付宝RSA公钥错误。请检查公钥文件格式是否正确');
+
+        //调用openssl内置方法验签，返回bool值
+
+        $result = (openssl_verify($this->getSignContent($params), base64_decode($sign), $res, OPENSSL_ALGO_SHA256)===1);
+        openssl_free_key($res);
+
+        return $result;
+    }
+
+    protected function rsaCheckV1($params, $rsaPublicKeyFilePath,$signType='RSA') {
+        $sign = $params['sign'];
+        $params['sign_type'] = null;
+        $params['sign'] = null;
+        return $this->verify($this->getSignContent($params), $sign, $rsaPublicKeyFilePath,$signType);
+    }
+    public function dealOrder($data){
+        print_r($data);
     }
 }
