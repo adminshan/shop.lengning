@@ -17,7 +17,7 @@ class CheckLogin
     {
         if(!$request->session()->get('uid')){
             header('Refresh:2;url=/login');
-            echo '无用户信息，请确定';echo '</br>';
+            echo '无用户信息请确定';echo '</br>';
             exit;
         }else if(!$request->session()->get('u_token')){
 
