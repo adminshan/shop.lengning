@@ -52,7 +52,7 @@ class IndexController extends Controller
             ];
             return $response;
         }
-        $goods_num=CartModel::where(['goods_id'=>$goods_id])->value('num');
+        $goods_num=CartModel::where(['goods_id'=>$goods_id,'uid'=>session('uid')])->value('num');
         if(!empty($goods_num)){
             $data=[
                 'num'=>$num+$goods_num,

@@ -16,7 +16,7 @@
                 <td>{{$v->goods_name}}</td>
                 <td>{{$v->num}}</td>
                 <td>{{$v->price / 100}}</td>
-                <td>{{date('Y-m-d H:i:s',$v->add_time)}}</td>
+                <td>{{date("Y-m-d H:i:s",$v ->add_time)}}</td>
                 <td><a href="/cart/del/{{$v->id}}">删除</a>|<a href="/order/add/{{$v->id}}">提交订单</a></td>
             </tr>
 
