@@ -23,7 +23,7 @@ class CheckLogin
 
                 echo json_encode([
                     'error' => 301,
-                    'url'   => url('/users/login')
+                    'url'   => url('/login')
                 ]);
                 die;
         }
