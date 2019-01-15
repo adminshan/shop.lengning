@@ -155,7 +155,9 @@ class AlipayController extends Controller
         //验签 支付宝的公钥
         if(!$this->verify()){
             echo 'error';
+            die;
         }
+        echo "ok";
 //        //处理订单逻辑
 //        $this->dealOrder($_GET);
     }
