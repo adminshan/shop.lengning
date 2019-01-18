@@ -67,10 +67,10 @@ Route::post('/cart/add2','Cart\IndexController@add2')->middleware('check.login')
 Route::get('/goods/index/{goods_id}','Goods\IndexController@index')->middleware('check.login');
 Route::get('/goods/list','Goods\IndexController@list')->middleware('check.login');
 //提交订单
-Route::get('/order/add/{id}','Order\IndexController@add')->middleware('check.login');
-Route::get('/order/list','Order\IndexController@list')->middleware('check.login');
-Route::get('/order/detail/{order_sn}','Order\IndexController@detail')->middleware('check.login');
-Route::get('/order/del/{order_sn}','Order\IndexController@del')->middleware('check.login');
+Route::get('/order/add/{id}','Order\IndexController@add');
+Route::get('/order/list','Order\IndexController@list');
+Route::get('/order/detail/{order_sn}','Order\IndexController@detail');
+Route::get('/order/del/{order_sn}','Order\IndexController@del');
 
 Route::get('/order/order','Order\IndexController@test');
 //支付
@@ -87,12 +87,6 @@ Route::get('/test/checkcookie','Test\TestController@checkCookie')->middleware('c
 
 
 
+Auth::routes();
 
-
-
-
-
-
-
-
-
+Route::get('/home', 'HomeController@index')->name('home');
