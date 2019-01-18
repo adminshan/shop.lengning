@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 
 class indexController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index($goods_id){
         $goods=GoodsModel::where(['goods_id'=>$goods_id])->first();
         if(empty($goods)){
