@@ -236,6 +236,24 @@ class AlipayController extends Controller
         return $this->verify($this->getSignContent($params), $sign, $rsaPublicKeyFilePath,$signType);
     }
     public function dealOrder($data){
+        //加积分
+        $where=[
+            'order_sn'=>$_POST['out_trade_no']
+        ];
+        $info=OrderModel::where($where)->first();
+        $userwhere=[
+            'uid'=>$info->uid
+        ];
+        $res=UserModel::where($userwhere)->first();
+        $arr=[
+            'score'=>$data['total_amount']+$res->score
+        ];
+        $res=UserModel::where($userwhere)->update($arr);
+        if($res){
+            return true;
+        }else {
+            return false;
+        }
 
     }
 }
