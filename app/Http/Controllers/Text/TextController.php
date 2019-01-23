@@ -18,7 +18,7 @@ class TextController extends Controller
         ];
         $info=TextModel::where($data)->first();
         if(empty($info)){
-            echo '登录失败';
+            echo '用户名或密码不正确';
         } else {
             $token = substr(md5(time().mt_rand(1,99999)),10,10);
             setcookie('uid',$info->uid,time()+86400,'/','',false,true);
