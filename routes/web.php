@@ -90,3 +90,20 @@ Route::get('/test/checkcookie','Test\TestController@checkCookie')->middleware('c
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('/goods/upload','Goods\IndexController@upload');
+Route::post('/goods/upload/pdf','Goods\IndexController@uploadpdf');
+
+
+//技能
+Route::get('/text/login','Text\TextController@login');
+Route::post('/text/login','Text\TextController@dologin');
+Route::get('/text/list','Text\TextController@list');
+Route::get('/text/pwd','Text\TextController@pwd');
+Route::post('/text/dopwd','Text\TextController@dopwd');
+
+
+
+
+
