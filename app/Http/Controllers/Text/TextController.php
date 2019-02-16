@@ -13,13 +13,16 @@ class TextController extends Controller
     }
     public function doLogin(Request $request){
         $name =$request->input('name');
+        $pwd =$request->input('pwd');
         $data=[
             'name'=>$name
         ];
         $info=TextModel::where($data)->first();
         if(empty($info)){
             echo '用户名或密码不正确';
-        } else {
+        } else if($pwd !== $info->pwd){
+            echo '用户名或密码不正确';
+        }else{
             $token = substr(md5(time().mt_rand(1,99999)),10,10);
             setcookie('uid',$info->uid,time()+86400,'/','',false,true);
             setcookie('token',$token,time()+86400,'/','',false,true);

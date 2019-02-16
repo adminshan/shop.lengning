@@ -44,4 +44,5 @@ class indexController extends Controller
             echo '上传成功';
         }
     }
+
 }
