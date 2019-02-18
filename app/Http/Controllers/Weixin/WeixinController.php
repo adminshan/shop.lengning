@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Weixin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Model\WeixinUser;
 use Illuminate\Support\Facades\Redis;
 
 class WeixinController extends Controller
