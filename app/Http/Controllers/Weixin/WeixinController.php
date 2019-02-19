@@ -99,7 +99,7 @@ class WeixinController extends Controller
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->getWXAccessToken();
 
         //请求微信接口
-        $client = new GuzzleHttp\client(['base_url' => $url]);
+        $client = new GuzzleHttp\Client(['base_url' => $url]);
 
         $data=[
             "button" =>[
