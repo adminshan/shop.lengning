@@ -68,7 +68,7 @@ class WeixinController extends Controller
      * @param $from     开发者公众号id 非 APPID
      */
     public function kefu01($openid,$from){
-        $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. 'Hello World, 现在时间'. date('Y-m-d H:i:s') .']]></Content></xml>';
+        $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. '您好，请问有什么可以为您服务的吗'. ']]></Content></xml>';
         echo $xml_response;
     }
     /**
@@ -121,6 +121,11 @@ class WeixinController extends Controller
                     "type" => "view",
                     "name" => "lening",
                     "url"  => "https://www.baidu.com"
+                ],
+                [
+                    "type"  => "click",      // click类型
+                    "name"  => "客服",
+                    "key"   => "kefu01"
                 ]
             ]
         ];
