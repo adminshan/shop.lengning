@@ -20,6 +20,7 @@ class WeixinController extends Controller
         $xml = simplexml_load_string($data);        //将 xml字符串 转换成对象
 
         $event = $xml->Event;                       //事件类型
+        $openid=$xml->FromUserName;
         //var_dump($xml);echo '<hr>';
 
         if($event=='subscribe'){
@@ -52,10 +53,23 @@ class WeixinController extends Controller
                 $id = WeixinUser::insertGetId($user_data);      //保存用户信息
                 var_dump($id);
             }
+        }elseif($event=='CLICK'){
+            if($xml->EventKey=='kefu01'){
+                $this->kefu01($openid,$xml->ToUserName);
+            }
         }
 
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
+    }
+    /***
+     * 客服
+     *  @param $openid   用户openid
+     * @param $from     开发者公众号id 非 APPID
+     */
+    public function kefu01($openid,$from){
+        $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. 'Hello World, 现在时间'. date('Y-m-d H:i:s') .']]></Content></xml>';
+        echo $xml_response;
     }
     /**
      * 获取微信AccessToken
@@ -110,7 +124,7 @@ class WeixinController extends Controller
                 ]
             ]
         ];
-        $r = $client->request('POST',$url,["body" => json_encode($data)]);
+        $r = $client->request('POST',$url,["body" => json_encode($data,JSON_UNESCAPED_UNICODE)]);
 
         //解析微信接口返回信息
         $response_arr = json_decode($r->getBody(),true);
