@@ -104,9 +104,9 @@ class WeixinController extends Controller
         //保存图片
         $r = Storage::disk('local')->put($wx_image_path,$response->getBody());
         if($r){
-            return true;
+            echo 'ok';
         }else{
-            return false;
+            echo 'no';
         }
     }
     /**
@@ -168,7 +168,7 @@ class WeixinController extends Controller
                 ]
             ]
         ];
-        $r = $client->request('POST',$url,["body" => json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        $r = $client->request('POST',$url,["body" => json_encode($data)]);
 
         //解析微信接口返回信息
         $response_arr = json_decode($r->getBody(),true);
