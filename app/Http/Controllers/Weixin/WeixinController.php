@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Redis;
 use GuzzleHttp;
 use Illuminate\Support\Facades\Storage;
 
-use App\Model\WeixinMedia;
-
 class WeixinController extends Controller
 {
     //
@@ -63,26 +61,14 @@ class WeixinController extends Controller
             }elseif($xml->MsgType=='image'){       //用户发送图片信息
                 //视业务需求是否需要下载保存图片
                 if(1){  //下载图片素材
-                    $file_name = $this->dlWxImg($xml->MediaId);
+                    $this->dlWxImg($xml->MediaId);
                     $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. date('Y-m-d H:i:s') .']]></Content></xml>';
                     echo $xml_response;
-
-//                    //写入数据库
-//                    $data = [
-//                        'openid'    => $openid,
-//                        'add_time'  => time(),
-//                        'msg_type'  => 'image',
-//                        'media_id'  => $xml->MediaId,
-//                        'format'    => $xml->Format,
-//                        'msg_id'    => $xml->MsgId,
-//                        'local_file_name'   => $file_name
-//                    ];
-//
-//                    $m_id = WeixinMedia::insertGetId($data);
-//                    var_dump($m_id);
                 }
             }elseif($xml->MsgType=='voice'){        //处理语音信息
                 $this->dlVoice($xml->MediaId);
+            }elseif($xml->MsgType=='video'){        //处理视频信息
+                $this->dlVideo($xml->MediaId);
             }elseif($xml->MsgType=='event'){        //判断事件类型
 
                 if($event=='subscribe'){                        //扫码关注事件
@@ -126,7 +112,7 @@ class WeixinController extends Controller
     public function kefu01($openid,$from)
     {
         // 文本消息
-        $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. '抱歉您不在服务区' .']]></Content></xml>';
+        $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. '抱歉您不在服务区'.']]></Content></xml>';
         echo $xml_response;
     }
 
@@ -142,9 +128,6 @@ class WeixinController extends Controller
         //保存图片
         $client = new GuzzleHttp\Client();
         $response = $client->get($url);
-        //$h = $response->getHeaders();
-        //echo '<pre>';print_r($h);echo '</pre>';die;
-
         //获取文件名
         $file_info = $response->getHeader('Content-disposition');
 
@@ -159,9 +142,6 @@ class WeixinController extends Controller
             //echo 'NO';
         }
 
-        return $file_name;
-
-
     }
 
     /**
@@ -174,14 +154,29 @@ class WeixinController extends Controller
 
         $client = new GuzzleHttp\Client();
         $response = $client->get($url);
-        //$h = $response->getHeaders();
-        //echo '<pre>';print_r($h);echo '</pre>';die;
-        //获取文件名
         $file_info = $response->getHeader('Content-disposition');
         $file_name = substr(rtrim($file_info[0],'"'),-20);
-
         $wx_image_path = 'wx/voice/'.$file_name;
-        //保存图片
+        $r = Storage::disk('local')->put($wx_image_path,$response->getBody());
+        if($r){     //保存成功
+
+        }else{      //保存失败
+
+        }
+    }
+    /**
+     * 下载视频文件
+     * @param $media_id
+     */
+    public function dlVideo($media_id)
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$this->getWXAccessToken().'&media_id='.$media_id;
+
+        $client = new GuzzleHttp\Client();
+        $response = $client->get($url);
+        $file_info = $response->getHeader('Content-disposition');
+        $file_name = substr(rtrim($file_info[0],'"'),-20);
+        $wx_image_path = 'wx/video/'.$file_name;
         $r = Storage::disk('local')->put($wx_image_path,$response->getBody());
         if($r){     //保存成功
 
@@ -190,22 +185,6 @@ class WeixinController extends Controller
         }
     }
 
-
-
-
-    /**
-     * 接收事件推送
-     */
-    public function validToken()
-    {
-        //$get = json_encode($_GET);
-        //$str = '>>>>>' . date('Y-m-d H:i:s') .' '. $get . "<<<<<\n";
-        //file_put_contents('logs/weixin.log',$str,FILE_APPEND);
-        //echo $_GET['echostr'];
-        $data = file_get_contents("php://input");
-        $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
-        file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
-    }
 
     /**
      * 获取微信AccessToken
