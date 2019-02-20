@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Model\WeixinUser;
 use Illuminate\Support\Facades\Redis;
 use GuzzleHttp;
+use Illuminate\Support\Facades\Storage;
+
 class WeixinController extends Controller
 {
     protected $redis_weixin_access_token = 'str:weixin_access_token'; //微信 access_token
@@ -27,8 +29,16 @@ class WeixinController extends Controller
                 $msg = $xml->Content;
                 $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. $msg. date('Y-m-d H:i:s') .']]></Content></xml>';
                 echo $xml_response;
-                exit();
+
+            }elseif($xml->MsgType=='image'){
+                //视业务需求是否需要下载保存图片
+                if(1){  //下载图片素材
+                    $this->dlWxImg($xml->MediaId);
+                    $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[\'.\']]></Content></xml>';
+                    echo $xml_response;
+                }
             }
+            exit();
         }
         if($event=='subscribe'){
             $openid = $xml->FromUserName;               //用户openid
@@ -77,6 +87,27 @@ class WeixinController extends Controller
     public function kefu01($openid,$from){
         $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. '您好，请问有什么可以为您服务的吗'. ']]></Content></xml>';
         echo $xml_response;
+    }
+    /**
+     * 下载图片素材
+     * @param $media_id
+     */
+    public function dlWxImg($media_id){
+        $url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$this->getWXAccessToken().'&media_id='.$media_id;
+        //保存照片
+        $client = new GuzzleHttp\Client();
+        $response = $client->get($url);
+        //获取文件名
+        $file_info = $response->getHeader('Content-disposition');
+        $file_name = substr(rtrim($file_info[0],'"'),-20);
+        $wx_image_path = 'wx/images/'.$file_name;
+        //保存图片
+        $r = Storage::disk('local')->put($wx_image_path,$response->getBody());
+        if($r){
+            return true;
+        }else{
+            return false;
+        }
     }
     /**
      * 获取微信AccessToken
