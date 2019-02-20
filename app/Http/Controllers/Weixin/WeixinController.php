@@ -68,7 +68,7 @@ class WeixinController extends Controller
             }elseif($xml->MsgType=='voice'){        //处理语音信息
                 $this->dlVoice($xml->MediaId);
             }elseif($xml->MsgType=='video'){        //处理视频信息
-                $this->dlVoice($xml->MediaId);
+                $this->dlVideo($xml->MediaId);
             }elseif($xml->MsgType=='event'){        //判断事件类型
 
                 if($event=='subscribe'){                        //扫码关注事件
@@ -157,14 +157,10 @@ class WeixinController extends Controller
 
         $client = new GuzzleHttp\Client();
         $response = $client->get($url);
-        //$h = $response->getHeaders();
-        //echo '<pre>';print_r($h);echo '</pre>';die;
-        //获取文件名
         $file_info = $response->getHeader('Content-disposition');
         $file_name = substr(rtrim($file_info[0],'"'),-20);
 
         $wx_image_path = 'wx/voice/'.$file_name;
-        //保存图片
         $r = Storage::disk('local')->put($wx_image_path,$response->getBody());
         if($r){     //保存成功
 
@@ -182,14 +178,9 @@ class WeixinController extends Controller
 
         $client = new GuzzleHttp\Client();
         $response = $client->get($url);
-        //$h = $response->getHeaders();
-        //echo '<pre>';print_r($h);echo '</pre>';die;
-        //获取文件名
         $file_info = $response->getHeader('Content-disposition');
         $file_name = substr(rtrim($file_info[0],'"'),-20);
-
         $wx_image_path = 'wx/video/'.$file_name;
-        //保存图片
         $r = Storage::disk('local')->put($wx_image_path,$response->getBody());
         if($r){     //保存成功
 

@@ -111,15 +111,15 @@ class WeixinController extends Controller
         $show->id('Id');
         $show->uid('Uid');
         $show->openid('Openid');
-        $show->add_time('Add time')->display(function($time){
-            return date('Y-m-d H:i:s',$time);
-        });;
+        $show->add_time('Add time')->display(function ($img_url){
+            return '<img src="'.$img_url.'">';
+        });
         $show->nickname('Nickname');
         $show->sex('Sex');
         $show->headimgurl('Headimgurl');
-        $show->subscribe_time('Subscribe time')->display(function($time){
-            return date('Y-m-d H:i:s',$time);
-        });;
+        $show->subscribe_time('Subscribe time')->display(function ($img_url){
+            return '<img src="'.$img_url.'">';
+        });
 
 
         return $show;
