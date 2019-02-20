@@ -34,7 +34,7 @@ class WeixinController extends Controller
                 //视业务需求是否需要下载保存图片
                 if(1){  //下载图片素材
                     $this->dlWxImg($xml->MediaId);
-                    $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[\'.$hint.\']]></Content></xml>';
+                    $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. date('Y-m-d H:i:s') .']]></Content></xml>';
                     echo $xml_response;
                 }
             }
@@ -42,7 +42,7 @@ class WeixinController extends Controller
         if($event=='subscribe'){
             $openid = $xml->FromUserName;               //用户openid
             $sub_time = $xml->CreateTime;               //扫码关注时间
-            
+
 //            echo 'openid: '.$openid;echo '</br>';
 //            echo '$sub_time: ' . $sub_time;
 
