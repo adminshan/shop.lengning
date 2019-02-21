@@ -61,9 +61,23 @@ class WeixinController extends Controller
             }elseif($xml->MsgType=='image'){       //用户发送图片信息
                 //视业务需求是否需要下载保存图片
                 if(1){  //下载图片素材
-                    $this->dlWxImg($xml->MediaId);
+                    $file_name = $this->dlWxImg($xml->MediaId);
                     $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. date('Y-m-d H:i:s') .']]></Content></xml>';
                     echo $xml_response;
+
+                    //写入数据库
+                    $data = [
+                        'openid'    => $openid,
+                        'add_time'  => time(),
+                        'msg_type'  => 'image',
+                        'media_id'  => $xml->MediaId,
+                        'format'    => $xml->Format,
+                        'msg_id'    => $xml->MsgId,
+                        'local_file_name'   => $file_name
+                    ];
+
+                    $m_id = WeixinMedia::insertGetId($data);
+                    var_dump($m_id);
                 }
             }elseif($xml->MsgType=='voice'){        //处理语音信息
                 $this->dlVoice($xml->MediaId);
@@ -185,6 +199,33 @@ class WeixinController extends Controller
         }
     }
 
+    public function textGroup(){
+        $url='https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token='.$this->getWXAccessToken();
+        //请求微信接口
+        $client=new GuzzleHttp\Client(['base_uri' => $url]);
+        $data=[
+            'filter'=>[
+                'is_to_all'=>true,
+                'tag_id'=>2  //is_to_all为true可不填写
+            ],
+            'text'=>[
+                'content'=>'欢迎大家'
+            ],
+            'msgtype'=>'text'
+        ];
+        $r=$client->request('post',$url,['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        //解析接口返回信息
+        $response_arr=json_decode($r->getBody(),true);
+        var_dump($response_arr);
+        if($response_arr['errcode']==0){
+            echo "群发成功";
+        }else{
+            echo "群发失败，请重试";
+            echo "<br/>";
+        }
+
+
+    }
 
     /**
      * 获取微信AccessToken
