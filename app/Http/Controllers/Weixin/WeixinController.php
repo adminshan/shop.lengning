@@ -156,7 +156,7 @@ class WeixinController extends Controller
         }else{      //保存失败
             //echo 'NO';
         }
-
+        return $file_name;
     }
 
     /**
