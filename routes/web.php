@@ -111,8 +111,16 @@ Route::get('/weixin/valid1','Weixin\WeixinController@validToken1');
 Route::post('/weixin/valid1','Weixin\WeixinController@wxEvent');        //接收微信服务器事件推送
 Route::post('/weixin/valid','Weixin\WeixinController@validToken');
 Route::get('/weixin/grop','Weixin\WeixinController@textGroup');
-
 Route::get('/weixin/create','Weixin\WeixinController@createMenu');//创建菜单
+
+Route::get('/form/show','Weixin\WeixinController@formShow');     //表单测试
+Route::post('/form/test','Weixin\WeixinController@formTest');     //表单测试
+
+Route::get('/weixin/material/list','Weixin\WeixinController@materialList');     //获取永久素材列表
+Route::get('/weixin/material/upload','Weixin\WeixinController@upMaterial');     //上传永久素材
+Route::post('/weixin/material','Weixin\WeixinController@materialTest');     //创建菜单
+
+
 
 
 

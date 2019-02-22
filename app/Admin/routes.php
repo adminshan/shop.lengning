@@ -15,5 +15,12 @@ Route::group([
     $router->resource('/users',UsersController::class);
     $router->resource('/weixin',WeixinController::class);
     $router->resource('/group',WeixinMediaController::class);
+    //永久素材
+    $router->resource('/fover/weixin',WeixinfoverController::class);
+    $router->post('/fover/weixin','WeixinfoverController@formTest');
+    //群发
+    $router->get('/send','WeixinsendController@index');
+    $router->post('/send','WeixinsendController@textGroup');
+
 
 });
