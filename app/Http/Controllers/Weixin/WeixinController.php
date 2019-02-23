@@ -308,18 +308,52 @@ class WeixinController extends Controller
         $client = new GuzzleHttp\Client(['base_uri' => $url]);
 
         $data = [
-            "button"    => [
+            "button"=>[
+            [
+            "name"=> "扫码",
+            "sub_button"=>[
                 [
-                    "type"  => "view",      // view类型 跳转指定 URL
-                    "name"  => "百度一下",
-                    "url"   => "https://www.baidu.com"
+                    "type"=> "scancode_waitmsg",
+                    "name"=> "扫码带提示",
+                    "key"=> "rselfmenu_0_0",
+                    "sub_button"=> [ ]
                 ],
                 [
-                    "type"  => "click",      // click类型
-                    "name"  => "客服",
-                    "key"   => "kefu01"
+                    "type"=> "scancode_push",
+                    "name"=> "扫码推事件",
+                    "key"=> "rselfmenu_0_1",
+                    "sub_button"=> [ ]
                 ]
-            ],
+            ]
+        ],
+        [
+            "name"=> "发图",
+            "sub_button"=> [
+                [
+                    "type"=> "pic_sysphoto",
+                    "name"=> "系统拍照发图",
+                    "key"=> "rselfmenu_1_0",
+                   "sub_button"=> [ ]
+                 ],
+                [
+                    "type"=> "pic_photo_or_album",
+                    "name"=> "拍照或者相册发图",
+                    "key"=> "rselfmenu_1_1",
+                    "sub_button"=> [ ]
+                ],
+            ]
+        ],
+        [
+            "name"=> "发送位置",
+            "type"=> "location_select",
+            "key"=> "rselfmenu_2_0"
+        ],
+        [
+            "type"=> "media_id",
+           "name"=> "图片",
+           "media_id"=> "MEDIA_ID1"
+        ],
+        ]
         ];
 
 

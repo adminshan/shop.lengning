@@ -159,6 +159,7 @@ class WeixinfoverController extends Controller
 
         $body = $response->getBody();
         $d = json_decode($body,true);
+        //print_r($d);exit;
         $data=[
             'media'=>$d['media_id'],
             'media_url'=>$d['url'],
