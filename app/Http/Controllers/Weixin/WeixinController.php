@@ -327,20 +327,18 @@ class WeixinController extends Controller
             ]
         ],
         [
-            
+
             "name"=> "发图",
             "sub_button"=> [
                 [
                     "type"=> "pic_sysphoto",
                     "name"=> "系统拍照发图",
                     "key"=> "rselfmenu_1_0",
-                   "sub_button"=> [ ]
                  ],
                 [
                     "type"=> "pic_photo_or_album",
                     "name"=> "拍照或者相册发图",
                     "key"=> "rselfmenu_1_1",
-                    "sub_button"=> [ ]
                 ],
             ]
         ],
