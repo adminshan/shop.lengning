@@ -175,7 +175,6 @@ class WeixinController extends Controller
         ];
         exit( json_encode($response));exit;*/
         $msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->first();
-        $msg['add_time']=date('Y-m-d H:i:s',$msg['add_time']);
         //$msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->get();
         if($msg){
             $response = [
