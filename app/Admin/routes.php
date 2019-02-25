@@ -21,6 +21,10 @@ Route::group([
     //群发
     $router->get('/send','WeixinsendController@index');
     $router->post('/send','WeixinsendController@textGroup');
+    //私聊
+    $router->get('/content','WeixinController@chatView');
+    $router->get('/content/getmsg','WeixinController@getChatMsg');
+    $router->post('/content','WeixinController@doChat');
 
 
 });
