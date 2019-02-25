@@ -174,7 +174,7 @@ class WeixinController extends Controller
             'pos'=>$pos
         ];
         exit( json_encode($response));exit;*/
-        $msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->first();
+        $msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->OrderBy('add_time','desc')->first();
         //$msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->get();
         if($msg){
             $response = [
