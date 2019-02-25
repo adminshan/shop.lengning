@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Weixin;
 use App\Model\WeixinUser;
 use App\Model\WeixinMedia;
 use App\Model\WeixinFover;
+use App\Model\WeixinChatModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
@@ -489,8 +490,43 @@ class WeixinController extends Controller
 
         //上传至微信永久素材
         $this->upMaterialTest($save_file_path);
-
-
+    }
+    public function content(){
+        return view('send.content');
     }
 
+
+    /**
+     * 微信客服聊天
+     */
+    public function chatView()
+    {
+        $data = [
+            'openid'    => 'oZcK_5_K_W4x7qe6vZiTkGpwVAE0'
+        ];
+        return view('send.content',$data);
+    }
+
+    public function getChatMsg()
+    {
+        $openid = $_GET['openid'];  //用户openid
+        $pos = $_GET['pos'];        //上次聊天位置
+        $msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->first();
+        //$msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->get();
+        if($msg){
+            $response = [
+                'errno' => 0,
+                'data'  => $msg->toArray()
+            ];
+
+        }else{
+            $response = [
+                'errno' => 50001,
+                'msg'   => '服务器异常，请联系管理员'
+            ];
+        }
+
+        die( json_encode($response));
+
+    }
 }
