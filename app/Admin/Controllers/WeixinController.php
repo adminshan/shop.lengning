@@ -180,7 +180,7 @@ class WeixinController extends Controller
         if($msg){
             $response = [
                 'errno' => 0,
-                'data'  => $msg->toArray()
+                'data'  => $msg
             ];
         }else{
             $response = [
