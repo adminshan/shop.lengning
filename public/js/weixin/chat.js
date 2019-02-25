@@ -26,7 +26,7 @@ setInterval(function(){
 $("#send_msg_btn").click(function(e){
     e.preventDefault();
     var send_msg = $("#send_msg").val().trim();
-    var msg_str = '<p style="color: mediumorchid"客服： '+send_msg+'</p>';
+    var msg_str = '<p style="color: mediumorchid"> 客服：'+send_msg+'</p>';
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
