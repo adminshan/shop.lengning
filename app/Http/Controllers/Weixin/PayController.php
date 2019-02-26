@@ -78,7 +78,7 @@ class PayController extends Controller
         } else {
             $error = curl_errno($ch);
             curl_close($ch);
-            die("curl出错，错误码:$error");
+            die("curl出错了，错误码:$error");
         }
     }
 
