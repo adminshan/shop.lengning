@@ -42,7 +42,7 @@ class PayController extends Controller
 
    }
     public function success(){
-        $order_sn=$_POST['prder_sn'];
+        $order_sn=$_POST['order_sn'];
         $data=OrderModel::where(['order_sn'=>$order_sn])->first()-toArray();
         if($data['status'==3]){
             echo 1;
