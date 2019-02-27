@@ -1,7 +1,7 @@
 @extends('layouts.bst')
 
 @section('content')
-    
+
         <input type="hidden" value="{{$code_url}}" id="code">
         <input type="hidden" value="{{$order_sn}}" id="order_id">
         <div id="qrcode" align="center"></div>
