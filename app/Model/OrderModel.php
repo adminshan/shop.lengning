@@ -11,6 +11,6 @@ class OrderModel extends Model
     /*订单号*/
     public static function generateOrderSN()
     {
-        return date('ymdHi') . rand(11111,99999) . rand(2222,9999);
+        return date('ymdHi') . rand(11111,99999) . rand(2222,9999).'shanshop';
     }
 }

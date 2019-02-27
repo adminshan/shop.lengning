@@ -19,7 +19,7 @@ class PayController extends Controller
            'mch_id'         =>  env('WEIXIN_MCH_ID'),       // 商户ID
            'nonce_str'      => str_random(16),             // 随机字符串
            'sign_type'      => 'MD5',
-           'body'            => '测试订单-'.mt_rand(1111,9999) . str_random(6),
+           'body'            => '测试订单-'.$order_id,
            'out_trade_no'   => $order_id,                       //本地订单号
            'total_fee'      => $total_fee,
            'spbill_create_ip'  => $_SERVER['REMOTE_ADDR'],     //客户端IP

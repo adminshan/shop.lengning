@@ -128,8 +128,8 @@ Route::get('/weixin/chat/get_msg','Weixin\WeixinController@getChatMsg');     //�
 
 //微信支付
 Route::get('/weixin/pay/test/{order_sn}','Weixin\PayController@test');     //微信支付测试
-Route::post('/pay/success','Weixin\PayController@success');     //微信支付测试
-Route::get('/weixin/pay/success','Weixin\PayController@successly');     //微信支付测试
+Route::post('/pay/success','Weixin\PayController@success');     //微信支付是否成功
+Route::get('/weixin/pay/success','Weixin\PayController@successly');     //微信支付成功
 Route::post('/weixin/pay/notice','Weixin\PayController@notice');     //微信支付通知回调
 
 
