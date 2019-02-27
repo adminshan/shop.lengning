@@ -195,12 +195,6 @@ class PayController extends Controller
             echo '订单已支付';
         }
         OrderModel::where(['order_sn'=>$order_sn])->update(['status'=>3]);
-        $order_num=$orderinfo['order_num'];
-        $goods_id=$orderinfo['goods_id'];
-        $data=GoodsModel::where(['goods_id'=>$goods_id])->first()->toArray();
-        $info=[
-            'store'=>$data['store']-$order_num
-        ];
-        GoodsModel::where(['goods_id'=>$goods_id])->update($info);
+
     }
 }
