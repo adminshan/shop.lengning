@@ -27,7 +27,8 @@
                 </td>
                 <td>
                     @if($v->status==1)
-                        <a href="/pay/alipay/test/{{$v->order_sn}}">支付</a>|
+                        <a href="/pay/alipay/test/{{$v->order_sn}}">支付宝支付</a>|
+                        <a href="/weixin/pay/test/{{$v->order_sn}}">微信支付</a>|
                         <a href="/order/detail/{{$v->order_sn}}">查看详情</a>
                         <a href="/order/del/{{$v->order_sn}}">取消</a>
                     @elseif($v->status==2)
