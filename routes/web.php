@@ -132,5 +132,9 @@ Route::post('/pay/success','Weixin\PayController@success');     //微信支付�
 Route::get('/weixin/pay/success','Weixin\PayController@successly');     //微信支付成功
 Route::post('/weixin/pay/notice','Weixin\PayController@notice');     //微信支付通知回调
 
+//微信登录
+Route::get('/weixin/login','Weixin\WeixinController@login');        //微信登录
+Route::get('/weixin/getcode','Weixin\WeixinController@getCode');        //接收code
+
 
 
