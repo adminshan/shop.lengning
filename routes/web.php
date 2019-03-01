@@ -54,9 +54,9 @@ Route::get('/reg','User\UserController@reg');
 Route::post('/reg','User\UserController@doReg');
 
 //用户登录
-Route::get('/login','User\UserController@login');
-Route::post('/login','User\UserController@doLogin');
-Route::get('/users/list','User\UserController@list');
+Route::get('/userlogin','User\UserController@login');
+Route::post('/userlogin','User\UserController@doLogin');
+Route::get('/users/list','User\UserController@goodslist');
 //购物车
 Route::get('/cart/list','Cart\IndexController@index');
 Route::get('/users/add/{goods_id}','Cart\IndexController@add');
@@ -65,7 +65,7 @@ Route::post('/cart/add2','Cart\IndexController@add2');
 
 //商品
 Route::get('/goods/index/{goods_id}','Goods\IndexController@index');
-Route::get('/goods/list','Goods\IndexController@list');
+Route::get('/goods/list','Goods\IndexController@goodslist');
 //提交订单
 Route::get('/order/add/{id}','Order\IndexController@add');
 Route::get('/order/list','Order\IndexController@list');
@@ -136,5 +136,8 @@ Route::post('/weixin/pay/notice','Weixin\PayController@notice');     //微信支
 Route::get('/weixin/login','Weixin\WeixinController@login');        //微信登录
 Route::get('/weixin/getcode','Weixin\WeixinController@getCode');        //接收code
 
+//微信 JSSDK
+
+Route::get('/weixin/jssdk','Weixin\WeixinController@jssdkTest');       // 测试
 
 

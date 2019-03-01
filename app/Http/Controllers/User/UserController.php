@@ -62,17 +62,17 @@ class UserController extends Controller
 			die('Confirm that the password must match the password');
 		}else{
 			$data=[
-					'name' =>$name,
-					'pwd' =>$pwd,
-					'age' =>$request->input('age'),
-					'email' =>$request->input('email'),
-					'reg_time'=>time(),
+				'name' =>$name,
+				'pwd' =>$pwd,
+				'age' =>$request->input('age'),
+				'email' =>$request->input('email'),
+				'score'=>0
 			];
 			$uid=UserModel::insertGetId($data);
 			if($uid){
 				setcookie('uid',$uid,time()+86400,'/','',false,true);
 				echo 'Registered successfully';
-				header('refresh:1;/login');
+				header('refresh:1;/userlogin');
 			}else{
 				echo 'Registration failed';
 				header('refresh:0.2;/reg');
@@ -107,7 +107,7 @@ class UserController extends Controller
 		}
 
 		}
-	public function list(Request $request){
+	public function goodslist(Request $request){
 		if(empty(setcookie('token'))){
 			header('refresh:1;/login');
 			echo 'Please log in';

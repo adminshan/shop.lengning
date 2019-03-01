@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Weixin;
 
+use App\Model\UserModel;
+use App\Model\WeixinLogin;
 use App\Model\WeixinUser;
 use App\Model\WeixinMedia;
 use App\Model\WeixinFover;
 use App\Model\WeixinChatModel;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
@@ -547,7 +550,7 @@ class WeixinController extends Controller
     /**
      * 接收code
      */
-    public function getCode()
+    public function getCode(Request $request)
     {
         $code = $_GET['code'];          // code
 
@@ -556,8 +559,8 @@ class WeixinController extends Controller
         $token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxe24f70961302b5a5&secret=0f121743ff20a3a454e4a12aeecef4be&code='.$code.'&grant_type=authorization_code';
         $token_json = file_get_contents($token_url);
         $token_arr = json_decode($token_json,true);
-//        echo '<hr>';
-//        echo '<pre>';print_r($token_arr);echo '</pre>';
+        //echo '<hr>';
+        //echo '<pre>';print_r($token_arr);echo '</pre>';
 
         $access_token = $token_arr['access_token'];
         $openid = $token_arr['openid'];
@@ -565,9 +568,70 @@ class WeixinController extends Controller
         // 3 携带token  获取用户信息
         $user_info_url = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
         $user_json = file_get_contents($user_info_url);
-
         $user_arr = json_decode($user_json,true);
-        echo '<hr>';
-        echo '<pre>';print_r($user_arr);echo '</pre>';
+        //echo '<hr>';
+        //echo '<pre>';print_r($user_arr);echo '</pre>';
+        $name=$user_arr['nickname'];
+        $info=UserModel::where(['name'=>$name])->first();
+        if(empty($info)){
+            $data=[
+                'name' =>$name,
+            ];
+            $uid=UserModel::insertGetId($data);
+            $wxData=[
+                'uid'=>$uid,
+                'openid'=>$user_arr['openid'],
+                'nickname'=>$user_arr['nickname'],
+                'headimgurl'=>$user_arr['headimgurl'],
+                'unionid'=>$user_arr['unionid'],
+                'add_time'=>time()
+            ];
+            $wxInfo=WeixinLogin::insertGetId($wxData);
+            if($wxInfo){
+                $token = substr(md5(time().mt_rand(1,99999)),10,10);
+                setcookie('uid',$uid,time()+86400,'/','',false,true);
+                setcookie('token',$token,time()+86400,'/','',false,true);
+                $request->session()->put('u_token',$token);
+                $request->session()->put('uid',$uid);
+                echo 'Login successful';
+                header('refresh:0.2;/goods/list');
+            }
+        }else{
+            $token = substr(md5(time().mt_rand(1,99999)),10,10);
+            setcookie('uid',$info->uid,time()+86400,'/','',false,true);
+            setcookie('token',$token,time()+86400,'/','',false,true);
+            $request->session()->put('u_token',$token);
+            $request->session()->put('uid',$info->uid);
+            echo 'Login successful';
+            header('refresh:0.2;/goods/list');
+
+        }
     }
+    /**
+     * jssdk测试
+     */
+    public function jssdkTest()
+    {
+        $jsconfig = [
+            'appid' => env('WEIXIN_APPID_0'),        //APPID
+            'timestamp' => time(),
+            'noncestr'    => str_random(10),
+            'sign'      => $this->wxJsConfigSign()
+        ];
+
+        $data = [
+            'jsconfig'  => $jsconfig
+        ];
+        return view('weixin.jssdk',$data);
+    }
+    /**
+     * 计算JSSDK sign
+     */
+    public function wxJsConfigSign()
+    {
+
+        $sign = str_random(15);
+        return $sign;
+    }
+
 }

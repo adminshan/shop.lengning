@@ -13,10 +13,7 @@ use App\Http\Controllers\Controller;
 
 class indexController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
     public function add($id){
         $cart_goods = CartModel::where(['id'=>$id])->first();
         $cart_num=$cart_goods->num;
