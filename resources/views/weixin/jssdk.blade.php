@@ -23,8 +23,6 @@
         });
 
         wx.ready(function(){
-
-
             $("#btn1").click(function () {
                 wx.chooseImage({
                     count: 9, // 默认9
