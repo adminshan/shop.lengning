@@ -170,14 +170,8 @@ class WeixinfoverController extends Controller
 
     public function formTest(Request $request)
     {
-//        echo '<pre>';print_r($_POST);echo '</pre>';echo '<hr>';
-//        echo '<pre>';print_r($_FILES);echo '</pre>';echo '<hr>';
-
         //保存文件
         $img_file = $request->file('media');
-        //echo '<pre>';print_r($img_file);echo '</pre>';echo '<hr>';
-        //exit;
-
         $img_origin_name = $img_file->getClientOriginalName();
         //echo 'originName: '.$img_origin_name;echo '</br>';
         $file_ext = $img_file->getClientOriginalExtension();          //获取文件扩展名
@@ -192,12 +186,22 @@ class WeixinfoverController extends Controller
 
         //保存文件
         $save_file_path = $request->media->storeAs('form_test',$new_file_name);       //返回保存成功之后的文件路径
-
-        //echo 'save_file_path: '.$save_file_path;echo '<hr>';
-
         //上传至微信永久素材
         $this->upMaterialTest($save_file_path);
-
-
     }
+    /*
+     * 标签
+     */
+    public function getTag(){
+        $url='https://api.weixin.qq.com/cgi-bin/tags/create?access_token='.$this->getWXAccessToken();
+        $data=[
+            'tag'=>['name'=>'山西']
+        ];
+        $client=new GuzzleHttp\Client();
+        $r=$client->request('post',$url,['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        //解析接口返回信息
+        $response_arr=json_decode($r->getBody(),true);
+        var_dump($response_arr);
+    }
+
 }

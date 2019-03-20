@@ -17,24 +17,17 @@ use Illuminate\Support\Facades\Storage;
 
 class WeixinController extends Controller
 {
-    //
-
     protected $redis_weixin_access_token = 'str:weixin_access_token';     //微信 access_token
     protected $redis_weixin_jsapi_ticket = 'str:weixin_jsapi_ticket';     //微信 jsapi_ticket
     public function test()
     {
-        //echo __METHOD__;
         echo 'Token: '. $this->getWXAccessToken();
     }
-
     /**
      * 首次接入
      */
     public function validToken1()
     {
-        //$get = json_encode($_GET);
-        //$str = '>>>>>' . date('Y-m-d H:i:s') .' '. $get . "<<<<<\n";
-        //file_put_contents('logs/weixin.log',$str,FILE_APPEND);
         echo $_GET['echostr'];
     }
 
@@ -44,8 +37,6 @@ class WeixinController extends Controller
     public function wxEvent()
     {
         $data = file_get_contents("php://input");
-
-
         //解析XML
         $xml = simplexml_load_string($data);        //将 xml字符串 转换成对象
 
@@ -55,8 +46,6 @@ class WeixinController extends Controller
 
         $event = $xml->Event;                       //事件类型
         $openid = $xml->FromUserName;               //用户openid
-
-
         // 处理用户发送消息
         if(isset($xml->MsgType)){
             if($xml->MsgType=='text'){            //用户发送文本消息
@@ -67,7 +56,6 @@ class WeixinController extends Controller
                     'content'=>$msg,
                     'add_time'=>time(),
                 ];
-
                 $m_id = WeixinChatModel::insertGetId($data);
                 //echo $xml_response;
                 exit;
