@@ -71,8 +71,8 @@ class UserController extends Controller
 			$uid=UserModel::insertGetId($data);
 			if($uid){
 				setcookie('uid',$uid,time()+86400,'/','',false,true);
-				echo 'Registered successfully';
-				header('refresh:1;/userlogin');
+				echo '1';
+				//header('refresh:1;/userlogin');
 			}else{
 				echo 'Registration failed';
 				header('refresh:0.2;/reg');
