@@ -85,9 +85,9 @@ class UserController extends Controller
 	}
 	public function doLogin(Request $request){
 		$name =$request->input('name');
-		echo $name;
+		//echo $name;
 		$pwd=$request->input('pwd');
-		echo $pwd;die;
+		//echo $pwd;die;
 		$data=[
 			'name'=>$name
 		];
