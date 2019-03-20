@@ -92,9 +92,9 @@ class UserController extends Controller
 		$info=UserModel::where($data)->first();
 		$pwd2=password_verify($pwd,$info->pwd);
 		if(empty($info)){
-			echo 'Login failed';
+			echo '2';
 		}else if($pwd2===false){
-			echo 'Wrong account or password';
+			echo '3';
 		}else {
 			$token = substr(md5(time().mt_rand(1,99999)),10,10);
 			setcookie('uid',$info->uid,time()+86400,'/','',false,true);
