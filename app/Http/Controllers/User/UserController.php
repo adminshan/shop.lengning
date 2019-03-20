@@ -102,8 +102,9 @@ class UserController extends Controller
 
 			$request->session()->put('u_token',$token);
 			$request->session()->put('uid',$info->uid);
-			echo 'Login successful';
-			header('refresh:0.2;/goods/list');
+			echo '1';
+//			echo 'Login successful';
+//			header('refresh:0.2;/goods/list');
 		}
 
 		}
