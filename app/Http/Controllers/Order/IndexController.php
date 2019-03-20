@@ -59,13 +59,13 @@ class indexController extends Controller
         }
     }
     public function list(){
-        echo '111';
-//        $list=OrderModel::all();
-//        $data=[
-//            'uid'=>session('uid'),
-//            'list'=>$list
-//        ];
-//        return view("order.list",$data);
+        //echo '111';
+        $list=OrderModel::all();
+        $data=[
+            'uid'=>session('uid'),
+            'list'=>$list
+        ];
+        return view("order.list",$data);
     }
     public function detail($order_sn){
 
