@@ -71,6 +71,7 @@ Route::get('/order/add/{id}','Order\IndexController@add');
 Route::get('/order/list','Order\IndexController@list');
 Route::get('/order/detail/{order_sn}','Order\IndexController@detail');
 Route::get('/order/del/{order_sn}','Order\IndexController@del');
+Route::get('/order/aaa','Order\IndexController@aaa');
 
 Route::get('/order/order','Order\IndexController@test');
 //支付
