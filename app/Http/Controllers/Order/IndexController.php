@@ -58,17 +58,14 @@ class indexController extends Controller
             echo '下单失败';
         }
     }
-    public function aaa(){
-        echo 'aaa';
-    }
     public function list(){
-
-        $list=OrderModel::all();
-        $data=[
-            'uid'=>session('uid'),
-            'list'=>$list
-        ];
-        return view("order.list",$data);
+        echo '111';
+//        $list=OrderModel::all();
+//        $data=[
+//            'uid'=>session('uid'),
+//            'list'=>$list
+//        ];
+//        return view("order.list",$data);
     }
     public function detail($order_sn){
 
