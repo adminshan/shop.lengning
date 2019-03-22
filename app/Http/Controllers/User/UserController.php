@@ -141,8 +141,7 @@ class UserController extends Controller
 		$redis_token=$response['redis_token'].$response['uid'];
 		$token=Redis::get($redis_token);
 		$arr=[
-			'error'=>0,
-			'msg'=>'登陆成功'
+			'msg'=>$response['msg']
 		];
 		if($response['token']==$token){
 			return json_encode($arr);
