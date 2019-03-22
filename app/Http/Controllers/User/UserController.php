@@ -127,7 +127,7 @@ class UserController extends Controller
 	public function api(Request $request){
 		$name=$request->input('name');
 		$pwd=$request->input('pwd');
-		$url="http://port.tactshan.com/apiLogin";
+		$url="http://port.tactshan.com/apilogin";
 		//向服务器传送数据
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL, $url);
