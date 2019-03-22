@@ -11,10 +11,10 @@
 @parent
 <script>
     $('.reg').click(function(){
-        location.href="http://passport.shopshan.com/reg?reurl="+"{{$recurl}}";
+        location.href="http://port.tactshan.com/reg?reurl="+"{{$recurl}}";
     })
     $('.login').click(function(){
-        location.href="http://passport.shopshan.com/userlogin?reurl="+"{{$recurl}}";
+        location.href="http://port.tactshan.com/userlogin?reurl="+"{{$recurl}}";
     })
 </script>
 @endsection
