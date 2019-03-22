@@ -138,14 +138,20 @@ class UserController extends Controller
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		$rs = curl_exec($ch);
 		$response = json_decode($rs, true);
-		$redis_token=$response['redis_token'].$response['uid'];
-		$token=Redis::get($redis_token);
-		$arr=[
-			'msg'=>$response['msg']
-		];
-		//if($response['token']==$token){
+		if(!empty($response['uid'])){
+			$redis_token=$response['redis_token'].$response['uid'];
+			$token=Redis::get($redis_token);
+			$arr=[
+					'msg'=>$response['msg']
+			];
+			if($response['token']==$token){
+				return json_encode($arr);
+			}
+		}else{
+			$arr=[
+					'msg'=>$response['msg']
+			];
 			return json_encode($arr);
-		//}
-
+		}
 	}
 }
