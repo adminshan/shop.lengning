@@ -110,31 +110,33 @@ class UserController extends Controller
 		}
 
 		}
-	public function goodslist(Request $request){
-		if(empty(setcookie('token'))){
-			header('refresh:1;/login');
-			echo 'Please log in';
-		}else if(setcookie('token') != $request->session()->get('u_token')){
-			header('refresh:1;/login');
-			echo 'Please log in';
-		}else{
-			$where=[
-				'uid'=>$_COOKIE['uid']
-			];
-			$info=UserModel::where($where)->first();
-			$list=UserModel::all();
-			$data=[
-				'list' => $list,
-				'name' => $info->name
-			];
-			return view('users.list',$data);
-		}
+	public function center(){
+		echo 1111;
+	}
+	public function start(Request $request){
+		//print_r($_SERVER);die;
+		$url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		$data=[
+			'login'=>$request->get('is_login'),
+			'recurl'=>urlencode($url)
+		];
+		return view('users.start',$data);
 
 	}
-	public function quit(){
-		setcookie('uid','',time()-1);
-		header("refresh:0;url=/login");
+	public function api(Request $request){
+		$name=$request->input('name');
+		$pwd=$request->input('pwd');
+		$url="http://port.tactshan.com/apiLogin";
+		//向服务器传送数据
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, ['name' => $name, 'pwd' => $pwd]);
 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		$rs = curl_exec($ch);
+		$response = json_decode($rs, true);
+		return json_encode($response['token']);
 	}
-
 }

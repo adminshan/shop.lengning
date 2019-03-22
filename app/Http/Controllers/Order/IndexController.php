@@ -58,11 +58,11 @@ class indexController extends Controller
             echo '下单失败';
         }
     }
-    public function list(){
+    public function orderlist(){
         //echo '111';
         $list=OrderModel::all();
         $data=[
-            'uid'=>session('uid'),
+            'uid'=>$_COOKIE['uid'],
             'list'=>$list
         ];
         return view("order.list",$data);

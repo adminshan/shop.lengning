@@ -1,7 +1,7 @@
 @extends('layouts.bst')
 @section('content')
 
-    <h1 align="center" style="color:red;">Welcome back </h1>
+    <h1 align="center" style="color:red;">Welcome back {{$uid}}</h1>
     <table class="table table-striped">
         <tr>
 

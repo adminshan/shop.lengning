@@ -49,6 +49,8 @@ Route::get('/query/where','Test\TestController@query2');
 //Route::match(['get','post'],'/test/abc','Test\TestController@abc');
 //Route::any('/test/abc','Test\TestController@abc');
 
+Route::get('/start','User\UserController@start')->middleware('check.login');
+Route::post('/api','User\UserController@api');
 //用户注册
 Route::get('/reg','User\UserController@reg');
 Route::post('/reg','User\UserController@doReg');
@@ -56,7 +58,7 @@ Route::post('/reg','User\UserController@doReg');
 //用户登录
 Route::get('/userlogin','User\UserController@login');
 Route::post('/userlogin','User\UserController@doLogin');
-Route::get('/users/list','User\UserController@goodslist');
+Route::get('/users/center','User\UserController@center');
 //购物车
 Route::get('/cart/list','Cart\IndexController@index');
 Route::get('/users/add/{goods_id}','Cart\IndexController@add');
@@ -68,7 +70,7 @@ Route::get('/goods/index/{goods_id}','Goods\IndexController@index');
 Route::get('/goods/list','Goods\IndexController@goodslist');
 //提交订单
 Route::get('/order/add/{id}','Order\IndexController@add');
-Route::get('/order/list','Order\IndexController@list');
+Route::get('/order/list','Order\IndexController@orderlist');
 Route::get('/order/detail/{order_sn}','Order\IndexController@detail');
 Route::get('/order/del/{order_sn}','Order\IndexController@del');
 Route::get('/order/aaa','Order\IndexController@aaa');
@@ -80,8 +82,7 @@ Route::get('/pay/alipay/test/{order_sn}','Pay\AlipayController@test');         /
 Route::post('/pay/alipay/notify','Pay\AlipayController@aliNotify');        //支付宝支付 通知回调
 Route::get('/pay/alipay/alireturn','Pay\AlipayController@aliReturn');        //支付宝支付 同步通知回调
 //退出
-Route::get('/users/quit','User\UserController@quit');
-Route::get('/aazz','User\UserController@aazz');
+Route::get('/certen','User\UserController@certen');
 //Test
 Route::get('/test/checkcookie','Test\TestController@checkCookie')->middleware('check.cookie');
 
@@ -140,5 +141,7 @@ Route::get('/weixin/getcode','Weixin\WeixinController@getCode');        //接收
 //微信 JSSDK
 
 Route::get('/weixin/jssdk','Weixin\WeixinController@jssdkTest');       // 测试
+
+
 
 
