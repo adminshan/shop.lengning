@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Model\UserModel;
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -137,10 +138,11 @@ class UserController extends Controller
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		$rs = curl_exec($ch);
 		$response = json_decode($rs, true);
-		$arr=[
-			'error'=>$response['error'],
-			'token'=>$response['token']
-		];
-		return json_encode($arr);
+		$redis_token=$response['redis_token'].$response['uid'];
+		$token=Redis::get($redis_token);
+		if($response['token']==$token){
+			echo '登陆成功';
+		}
+
 	}
 }
