@@ -141,7 +141,7 @@ class UserController extends Controller
 		$rs = curl_exec($ch);
 		$response = json_decode($rs, true);
 		$arr=[
-			'error'=>0,
+			'error'=>$response['error'],
 			'token'=>$response['token']
 		];
 		return json_encode($arr);
