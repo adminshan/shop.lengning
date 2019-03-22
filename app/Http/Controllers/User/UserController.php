@@ -137,6 +137,10 @@ class UserController extends Controller
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		$rs = curl_exec($ch);
 		$response = json_decode($rs, true);
-		return json_encode($response['token']);
+		$arr=[
+			'error'=>0,
+			'token'=>$response['token']
+		];
+		return json_encode($arr);
 	}
 }
