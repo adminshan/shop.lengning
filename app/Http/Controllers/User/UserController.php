@@ -129,7 +129,7 @@ class UserController extends Controller
 		$pwd=$request->input('pwd');
 		$url="http://port.tactshan.com/apiLogin";
 		//向服务器传送数据
-		$ch = curl_init();
+		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, ['name' => $name, 'pwd' => $pwd]);
