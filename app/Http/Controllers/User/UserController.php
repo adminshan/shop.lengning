@@ -143,9 +143,9 @@ class UserController extends Controller
 		$arr=[
 			'msg'=>$response['msg']
 		];
-		if($response['token']==$token){
+		//if($response['token']==$token){
 			return json_encode($arr);
-		}
+		//}
 
 	}
 }
