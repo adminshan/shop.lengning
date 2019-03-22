@@ -146,6 +146,11 @@ class UserController extends Controller
 			];
 			if($response['token']==$token){
 				return json_encode($arr);
+			}else{
+				$arr=[
+						'msg'=>'登录失败'
+				];
+				return json_encode($arr);
 			}
 		}else{
 			$arr=[
