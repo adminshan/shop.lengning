@@ -2,6 +2,7 @@
 @section('content')
     @if($login==1)
         <a href="{{url('/users/center')}}">个人中心</a>
+        <a href="{{url('/quit')}}">退出</a>
     @else
     <button class="reg">注册</button>
     <button class="login">登录</button>

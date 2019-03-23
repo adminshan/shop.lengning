@@ -145,6 +145,8 @@ class UserController extends Controller
 					'msg'=>$response['msg']
 			];
 			if($response['token']==$token){
+				$key='str:u:pho:'.$response['uid'];
+				Redis::set($key,$token);
 				return json_encode($arr);
 			}else{
 				$arr=[
@@ -158,5 +160,10 @@ class UserController extends Controller
 			];
 			return json_encode($arr);
 		}
+	}
+	public function quit(){
+		setcookie('uid',$_COOKIE['uid'],time()-1,'/','tactshan.com',false,true);
+		setcookie('token',$_COOKIE['token'],time()-1,'/','tactshan.com',false,true);
+		header('refresh:0.2;/start');
 	}
 }
