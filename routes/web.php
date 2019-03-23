@@ -51,6 +51,8 @@ Route::get('/query/where','Test\TestController@query2');
 
 Route::get('/start','User\UserController@start')->middleware('check.login');
 Route::post('/api','User\UserController@api');
+//退出
+Route::get('/quit','User\UserController@quit')->middleware('check.login');
 //用户注册
 Route::get('/reg','User\UserController@reg');
 Route::post('/reg','User\UserController@doReg');
