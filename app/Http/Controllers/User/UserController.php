@@ -127,20 +127,20 @@ class UserController extends Controller
 	public function api(Request $request){
 		$name=$request->input('name');
 		$pwd=$request->input('pwd');
+//		$name='zhangyi';
+//		$pwd='qq';
 		$url="http://port.tactshan.com/apilogin";
 		//向服务器传送数据
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
+		//curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, ['name' => $name, 'pwd' => $pwd]);
 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		$rs = curl_exec($ch);
 		$response = json_decode($rs, true);
-		var_dump($response);
-		die;
-		if(!empty($response['uid'])){
+		if($response['error']==0){
 			$redis_token=$response['redis_token'].$response['uid'];
 			$token=Redis::get($redis_token);
 			$arr=[
@@ -156,7 +156,7 @@ class UserController extends Controller
 				return json_encode($arr);
 			}else{
 				$arr=[
-						'msg'=>'登录失败1'
+						'msg'=>'登录失败'
 				];
 				return json_encode($arr);
 			}
@@ -177,7 +177,7 @@ class UserController extends Controller
 		$redis=$request->input('redis');
 		$redis_token=$redis.$uid;
 		Redis::del($redis_token);
-		$token=Redis::hget($redis_token);
+		$token=Redis::get($redis_token);
 		if(empty($token)){
 			$arr=[
 				'error'=>0,
