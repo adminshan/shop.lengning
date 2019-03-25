@@ -154,7 +154,7 @@ class UserController extends Controller
 				return json_encode($arr);
 			}else{
 				$arr=[
-						'msg'=>'登录失败'
+						'msg'=>'登录失败1'
 				];
 				return json_encode($arr);
 			}
