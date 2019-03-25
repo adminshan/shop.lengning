@@ -141,7 +141,7 @@ class UserController extends Controller
 		$rs = curl_exec($ch);
 		$response = json_decode($rs, true);
 		if($response['error']==1){
-			$redis_token=$response['redis_token'].$response['uid'];
+			$redis_token=$response['redis_token'];
 			$token=Redis::get($redis_token);
 			$arr=[
 					'error'=>0,
@@ -173,7 +173,6 @@ class UserController extends Controller
 		header('refresh:0.2;/start');
 	}
 	public function userquit(Request $request){
-		$uid=$request->input('uid');
 		$redis=$request->input('redis');
 		$redis_token=$redis;
 		Redis::del($redis_token);
