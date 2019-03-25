@@ -175,8 +175,8 @@ class UserController extends Controller
 	public function userquit(Request $request){
 		$uid=$request->input('uid');
 		$redis=$request->input('redis');
-		$redis_token=$redis.$uid;
-		Redis::flushdb();
+		$redis_token=$redis;
+		Redis::del($redis_token);
 		$token=Redis::get($redis_token);
 		if(empty($token)){
 			$arr=[
