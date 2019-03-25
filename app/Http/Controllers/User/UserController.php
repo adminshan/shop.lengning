@@ -176,7 +176,7 @@ class UserController extends Controller
 		$uid=$request->input('uid');
 		$redis=$request->input('redis');
 		$redis_token=$redis.$uid;
-		Redis::del($redis_token);
+		Redis::flushdb();
 		$token=Redis::get($redis_token);
 		if(empty($token)){
 			$arr=[
