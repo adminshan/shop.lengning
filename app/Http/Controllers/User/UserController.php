@@ -140,13 +140,17 @@ class UserController extends Controller
 		$response = json_decode($rs, true);
 		if(!empty($response['uid'])){
 			$redis_token=$response['redis_token'].$response['uid'];
-			$token=Redis::get($redis_token);
+			$token=Redis::hget($redis_token);
 			$arr=[
-					'msg'=>$response['msg']
+					'error'=>0,
+					'msg'=>$response['msg'],
+					'token'=>$token,
+					'name'=>$response['name'],
+					'age'=>$response['age'],
+					'email'=>$response['email'],
+					'redis'=>$response['redis_token'],
 			];
 			if($response['token']==$token){
-				$key='str:u:pho:'.$response['uid'];
-				Redis::set($key,$token);
 				return json_encode($arr);
 			}else{
 				$arr=[
@@ -165,5 +169,19 @@ class UserController extends Controller
 		setcookie('uid',$_COOKIE['uid'],time()-1,'/','tactshan.com',false,true);
 		setcookie('token',$_COOKIE['token'],time()-1,'/','tactshan.com',false,true);
 		header('refresh:0.2;/start');
+	}
+	public function userquit(Request $request){
+		$uid=$request->input('uid');
+		$redis=$request->input('redis');
+		$redis_token=$redis.$uid;
+		Redis::del($redis_token);
+		$token=Redis::hget($redis_token);
+		if(empty($token)){
+			$arr=[
+				'error'=>0,
+				'msg'=>'退出成功'
+			];
+			return json_encode($arr);
+		}
 	}
 }
