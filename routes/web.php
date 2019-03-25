@@ -50,7 +50,7 @@ Route::get('/query/where','Test\TestController@query2');
 //Route::any('/test/abc','Test\TestController@abc');
 
 Route::get('/start','User\UserController@start')->middleware('check.login');
-Route::get('/api','User\UserController@api');
+Route::post('/api','User\UserController@api');
 Route::post('/user/quit','User\UserController@userquit');
 //退出
 Route::get('/quit','User\UserController@quit')->middleware('check.login');
