@@ -140,7 +140,7 @@ class UserController extends Controller
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		$rs = curl_exec($ch);
 		$response = json_decode($rs, true);
-		if($response['error']==0){
+		if($response['error']==1){
 			$redis_token=$response['redis_token'].$response['uid'];
 			$token=Redis::get($redis_token);
 			$arr=[
@@ -153,18 +153,18 @@ class UserController extends Controller
 					'redis'=>$response['redis_token'],
 			];
 			if($response['token']==$token){
-				return json_encode($arr);
+				echo json_encode($arr);
 			}else{
 				$arr=[
 						'msg'=>'登录失败'
 				];
-				return json_encode($arr);
+				echo json_encode($arr);
 			}
 		}else{
 			$arr=[
 					'msg'=>$response['msg']
 			];
-			return json_encode($arr);
+			echo json_encode($arr);
 		}
 	}
 	public function quit(){
