@@ -140,7 +140,7 @@ class UserController extends Controller
 		$response = json_decode($rs, true);
 		if(!empty($response['uid'])){
 			$redis_token=$response['redis_token'].$response['uid'];
-			$token=Redis::hget($redis_token);
+			$token=Redis::get($redis_token);
 			$arr=[
 					'error'=>0,
 					'msg'=>$response['msg'],
